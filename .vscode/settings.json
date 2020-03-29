@@ -1,0 +1,7 @@
+{
+  "editor.tabSize": 4,
+  "editor.rulers": [120],
+  "editor.trimAutoWhitespace": true,
+  "editor.formatOnSave": true,
+  "python.formatting.provider": "black"
+}
