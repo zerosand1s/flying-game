@@ -1,5 +1,5 @@
 import pygame
-from pygame.locals import K_ESCAPE, KEYDOWN, QUIT
+from pygame.locals import RLEACCEL, K_ESCAPE, KEYDOWN, QUIT
 import random
 import config
 
@@ -28,11 +28,11 @@ collision_sound = pygame.mixer.Sound("sounds/Collision.ogg")
 
 # custom event to create enemy
 ADDENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDENEMY, 250)
+pygame.time.set_timer(ADDENEMY, 300)
 
 # custom event to create cloud
 ADDCLOUD = pygame.USEREVENT + 2
-pygame.time.set_timer(ADDENEMY, 1000)
+pygame.time.set_timer(ADDCLOUD, 1500)
 
 # sprite group to hold enemies
 enemies = pygame.sprite.Group()
@@ -88,6 +88,10 @@ while keepRunning:
         player.kill()
         # move_up_sound.stop()
         # move_down_sound.stop()
+        collision_surf = pygame.image.load("images/explosion.png").convert()
+        collision_surf.set_colorkey((0, 0, 0), RLEACCEL)
+        collision_rect = player.rect
+        screen.blit(collision_surf, collision_rect)
         collision_sound.play()
         keepRunning = False
 
