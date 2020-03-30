@@ -1,14 +1,5 @@
 import pygame
-from pygame.locals import (
-    RLEACCEL,
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_ESCAPE,
-    KEYDOWN,
-    QUIT,
-)
+from pygame.locals import K_ESCAPE, KEYDOWN, QUIT
 import random
 import config
 
@@ -18,12 +9,10 @@ from classes.cloud import Cloud
 
 # set up for sounds. initialize only when defaults need to be changed
 # pygame.mixer.init()
-
 pygame.init()
+# set up a game window
+screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 pygame.display.set_caption(config.CAPTION)
-
-# set up clock to configure frame rate
-clock = pygame.time.Clock()
 
 # load and play background music
 # sound source: http://ccmixter.org/files/Apoxode/59262
@@ -45,19 +34,20 @@ pygame.time.set_timer(ADDENEMY, 250)
 ADDCLOUD = pygame.USEREVENT + 2
 pygame.time.set_timer(ADDENEMY, 1000)
 
-# set up a game window
-screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
-player = Player()
-
 # sprite group to hold enemies
 enemies = pygame.sprite.Group()
 
 # sprite group to hold all sprites, used for rendering
 all_sprites = pygame.sprite.Group()
-all_sprites.add(player)
 
 # sprite group to hold clouds
 clouds = pygame.sprite.Group()
+
+# set up clock to configure frame rate
+clock = pygame.time.Clock()
+
+player = Player()
+all_sprites.add(player)
 
 # flag to keep window running
 keepRunning = True
