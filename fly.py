@@ -10,12 +10,17 @@ from pygame.locals import (
     QUIT,
 )
 import random
+import config
+
+from classes.player import Player
+from classes.enemy import Enemy
+from classes.cloud import Cloud
 
 # set up for sounds. initialize only when defaults need to be changed
 # pygame.mixer.init()
 
 pygame.init()
-pygame.display.set_caption("This Is A Flying Game")
+pygame.display.set_caption(config.CAPTION)
 
 # set up clock to configure frame rate
 clock = pygame.time.Clock()
@@ -32,79 +37,6 @@ move_up_sound = pygame.mixer.Sound("sounds/Rising_putter.ogg")
 move_down_sound = pygame.mixer.Sound("sounds/Falling_putter.ogg")
 collision_sound = pygame.mixer.Sound("sounds/Collision.ogg")
 
-SCREEN_WIDTH = 700
-SCREEN_HEIGHT = 300
-
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Player, self).__init__()
-        self.surf = pygame.image.load("images/player.png").convert()
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
-        self.rect = self.surf.get_rect()
-
-    def update(self, pressed_keys):
-        # move_ip = move in place
-        if pressed_keys[K_UP]:
-            self.rect.move_ip(0, -5)
-            # move_up_sound.play()
-        if pressed_keys[K_DOWN]:
-            self.rect.move_ip(0, 5)
-            # move_down_sound.play()
-        if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-5, 0)
-        if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(5, 0)
-
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH
-        if self.rect.top <= 0:
-            self.rect.top = 0
-        if self.rect.bottom >= SCREEN_HEIGHT:
-            self.rect.bottom = SCREEN_HEIGHT
-
-
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Enemy, self).__init__()
-        self.surf = pygame.image.load("images/enemy.png").convert()
-        self.surf.set_colorkey((255, 255, 255), RLEACCEL)
-        self.rect = self.surf.get_rect(
-            center=(
-                random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
-                random.randint(0, SCREEN_HEIGHT),
-            )
-        )
-        self.speed = random.randint(5, 20)
-
-    def update(self):
-        self.rect.move_ip(-self.speed, 0)
-
-        if self.rect.right < 0:
-            self.kill()
-
-
-class Cloud(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Cloud, self).__init__()
-        self.surf = pygame.image.load("images/cloud.png").convert()
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
-        self.rect = self.surf.get_rect(
-            center=(
-                random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
-                random.randint(0, SCREEN_HEIGHT),
-            )
-        )
-
-    def update(self):
-        self.rect.move_ip(-5, 0)
-
-        if self.rect.right < 0:
-            self.kill()
-
-
 # custom event to create enemy
 ADDENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(ADDENEMY, 250)
@@ -114,7 +46,7 @@ ADDCLOUD = pygame.USEREVENT + 2
 pygame.time.set_timer(ADDENEMY, 1000)
 
 # set up a game window
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 player = Player()
 
 # sprite group to hold enemies
